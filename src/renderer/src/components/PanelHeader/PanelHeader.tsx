@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import { GripVertical, PanelLeftOpen, PanelTopOpen, X } from 'lucide-react'
+import { Bot, GripVertical, PanelLeftOpen, PanelTopOpen, X } from 'lucide-react'
 import { usePanelStore } from '../../store/panelStore'
 import styles from './PanelHeader.module.css'
 
@@ -49,6 +49,15 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ panelId, isFocused }) => {
     [panelId, splitPanel]
   )
 
+  const handleOpenClaude = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      focusPanel(panelId)
+      window.electronAPI.pty.write(panelId, 'claude\n')
+    },
+    [panelId, focusPanel]
+  )
+
   const handleHeaderClick = useCallback(() => {
     focusPanel(panelId)
   }, [panelId, focusPanel])
@@ -75,6 +84,13 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ panelId, isFocused }) => {
 
       {/* Actions */}
       <div className={styles.actions}>
+        <button
+          className={`${styles.actionBtn} ${styles.claudeBtn}`}
+          onClick={handleOpenClaude}
+          title="Open Claude Code"
+        >
+          <Bot size={13} />
+        </button>
         <button
           className={styles.actionBtn}
           onClick={handleSplitH}

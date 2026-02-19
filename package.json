@@ -11,7 +11,7 @@
     "build": "electron-vite build",
     "rebuild": "electron-rebuild -f -w node-pty",
     "pack": "pnpm build && electron-builder --dir",
-    "dist": "pnpm build && electron-builder"
+    "dist": "pnpm build && electron-builder && electron-rebuild -f -w node-pty"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -80,6 +80,11 @@
   color: var(--fg);
 }
 
+.claudeBtn:hover {
+  background: rgba(187, 154, 247, 0.15);
+  color: var(--magenta);
+}
+
 .closeBtn:hover {
   background: var(--red);
   color: white;
