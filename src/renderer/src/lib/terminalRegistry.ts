@@ -1,7 +1,7 @@
 /**
- * Registry global de instâncias xterm.js.
- * Mantém terminais vivos entre remontagens de componentes, evitando
- * que mudanças na árvore de layout destruam PTYs ativos.
+ * Global registry of xterm.js instances.
+ * Keeps terminals alive between component remounts, preventing
+ * layout tree changes from destroying active PTYs.
  */
 import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
@@ -36,15 +36,15 @@ const tokyoNightTheme = {
 export interface TerminalEntry {
   term: Terminal
   fitAddon: FitAddon
-  /** Limpezas registradas ao criar o PTY (listeners IPC, etc.) */
+  /** Cleanups registered when the PTY was created (IPC listeners, etc.) */
   ptyCleanups: (() => void)[]
 }
 
 const registry = new Map<string, TerminalEntry>()
 
 /**
- * Retorna a entrada existente ou cria uma nova instância de xterm.
- * NÃO chama `term.open()` — isso é feito pelo componente.
+ * Returns the existing entry or creates a new xterm instance.
+ * Does NOT call `term.open()` — that is done by the component.
  */
 export function getOrCreate(panelId: string): TerminalEntry {
   if (!registry.has(panelId)) {
@@ -69,8 +69,8 @@ export function getOrCreate(panelId: string): TerminalEntry {
 }
 
 /**
- * Destrói a instância xterm e o PTY associado.
- * Chamar ao fechar um painel de verdade (não ao remontar).
+ * Destroys the xterm instance and its associated PTY.
+ * Call when truly closing a panel — not on remount.
  */
 export function destroyEntry(panelId: string): void {
   const entry = registry.get(panelId)

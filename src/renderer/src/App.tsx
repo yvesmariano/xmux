@@ -3,7 +3,6 @@ import {
   DndContext,
   DragEndEvent,
   DragOverlay,
-  DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors
@@ -25,17 +24,17 @@ const App: React.FC = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8 // começa drag só após 8px de movimento
+        distance: 8 // drag starts only after 8px of movement
       }
     })
   )
 
-  // Atalhos de teclado globais
+  // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
       const meta = e.metaKey || e.ctrlKey
 
-      // Cmd+T — nova aba
+      // Cmd+T — new tab
       if (meta && e.key === 't' && !e.shiftKey) {
         e.preventDefault()
         addTab()
@@ -45,21 +44,21 @@ const App: React.FC = () => {
       const focusedPanelId = activeTab?.focusedPanelId
       if (!focusedPanelId) return
 
-      // Cmd+D — split horizontal
+      // Cmd+D — horizontal split
       if (meta && e.key === 'd' && !e.shiftKey) {
         e.preventDefault()
         splitPanel(focusedPanelId, 'horizontal')
         return
       }
 
-      // Cmd+Shift+D — split vertical
+      // Cmd+Shift+D — vertical split
       if (meta && e.key === 'd' && e.shiftKey) {
         e.preventDefault()
         splitPanel(focusedPanelId, 'vertical')
         return
       }
 
-      // Cmd+W — fechar painel
+      // Cmd+W — close panel
       if (meta && e.key === 'w') {
         e.preventDefault()
         closePanel(focusedPanelId)
@@ -86,13 +85,13 @@ const App: React.FC = () => {
       const { leafId: targetLeafId, position } = overData
 
       if (position === 'center') {
-        // Swap: encontrar o panelId do leaf alvo
+        // Swap: find the panelId of the target leaf
         const targetPanel = findPanelIdByLeafId(activeTab.layout, targetLeafId)
         if (targetPanel && targetPanel !== sourcePanelId) {
           swapPanelsAction(sourcePanelId, targetPanel)
         }
       } else {
-        // Move para borda
+        // Move to edge
         movePanelToZone(sourcePanelId, targetLeafId, position as 'top' | 'bottom' | 'left' | 'right')
       }
     },
@@ -108,7 +107,7 @@ const App: React.FC = () => {
         </div>
       </div>
       <DragOverlay>
-        {/* Preview minimalista durante drag */}
+        {/* Minimal drag preview */}
         <div className={styles.dragOverlay}>
           <span>Terminal</span>
         </div>
@@ -117,7 +116,7 @@ const App: React.FC = () => {
   )
 }
 
-// Helper: encontra panelId de um LeafNode pelo seu id
+// Helper: finds the panelId of a LeafNode by its node id
 function findPanelIdByLeafId(
   node: import('./lib/layoutTree').LayoutNode,
   leafId: string

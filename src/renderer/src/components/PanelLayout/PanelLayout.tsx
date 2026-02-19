@@ -25,7 +25,7 @@ const LeafRenderer: React.FC<LeafRendererProps> = ({ node, focusedPanelId, isDra
       <div className={styles.terminalWrapper}>
         <TerminalPanel panelId={node.panelId} isFocused={isFocused} />
 
-        {/* Drop zones visíveis apenas durante drag */}
+        {/* Drop zones — visible only while dragging */}
         {isDragging && DROP_POSITIONS.map((pos) => (
           <DropZone
             key={pos}

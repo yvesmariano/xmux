@@ -59,7 +59,7 @@ export function resizePty(id: string, cols: number, rows: number): void {
     try {
       session.pty.resize(cols, rows)
     } catch {
-      // PTY pode estar fechando
+      // PTY may be closing
     }
   }
 }
@@ -70,7 +70,7 @@ export function destroyPty(id: string): void {
     try {
       session.pty.kill()
     } catch {
-      // já morto
+      // already dead
     }
     sessions.delete(id)
   }

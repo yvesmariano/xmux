@@ -22,14 +22,14 @@ const TerminalPanel: React.FC<TerminalPanelProps> = ({ panelId, isFocused }) => 
     const api = window.electronAPI.pty
 
     if (!term.element) {
-      // Primeira montagem: abrir xterm neste container
+      // First mount: open xterm in this container
       term.open(container)
     } else {
-      // Remontagem após mudança de layout: mover DOM do xterm sem recriar
+      // Remount after layout change: move xterm DOM without recreating
       container.appendChild(term.element)
     }
 
-    // Ajustar tamanho ao container atual
+    // Fit to current container size
     requestAnimationFrame(() => {
       try {
         fitAddon.fit()
@@ -38,7 +38,7 @@ const TerminalPanel: React.FC<TerminalPanelProps> = ({ panelId, isFocused }) => 
       }
     })
 
-    // Criar PTY na primeira montagem real
+    // Create PTY on first real mount
     const ptyAlreadyRunning = entry.ptyCleanups.length > 0
     if (!ptyAlreadyRunning) {
       const { cols, rows } = term
@@ -46,14 +46,14 @@ const TerminalPanel: React.FC<TerminalPanelProps> = ({ panelId, isFocused }) => 
 
       const removeData = api.onData(panelId, (data) => term.write(data))
       const removeExit = api.onExit(panelId, () => {
-        term.write('\r\n\x1b[1;31m[Processo encerrado]\x1b[0m\r\n')
+        term.write('\r\n\x1b[1;31m[Process exited]\x1b[0m\r\n')
       })
       const disposeInput = term.onData((data) => api.write(panelId, data))
 
       entry.ptyCleanups.push(removeData, removeExit, () => disposeInput.dispose())
     }
 
-    // ResizeObserver — reconectar a cada montagem (container pode mudar de tamanho)
+    // ResizeObserver — reconnect on each mount (container may change size)
     let resizeTimer: ReturnType<typeof setTimeout> | null = null
     const ro = new ResizeObserver(() => {
       if (resizeTimer) clearTimeout(resizeTimer)
@@ -69,14 +69,14 @@ const TerminalPanel: React.FC<TerminalPanelProps> = ({ panelId, isFocused }) => 
     ro.observe(container)
 
     return () => {
-      // Ao desmontar: apenas desconectar o observer.
-      // NÃO destruir o terminal nem o PTY — o registry os mantém vivos.
+      // On unmount: only disconnect the observer.
+      // Do NOT destroy the terminal or PTY — the registry keeps them alive.
       ro.disconnect()
       if (resizeTimer) clearTimeout(resizeTimer)
     }
   }, [panelId])
 
-  // Focar o terminal quando isFocused muda
+  // Focus terminal when isFocused changes
   useEffect(() => {
     if (isFocused) {
       getOrCreate(panelId).term.focus()

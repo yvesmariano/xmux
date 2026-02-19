@@ -4,7 +4,7 @@ export interface SplitNode {
   type: 'split'
   id: string
   direction: 'horizontal' | 'vertical'
-  sizes: [number, number] // percentuais, soma = 100
+  sizes: [number, number] // percentages, must sum to 100
   children: [LayoutNode, LayoutNode]
 }
 
@@ -20,7 +20,7 @@ export function makeLeaf(panelId: string): LeafNode {
   return { type: 'leaf', id: uuidv4(), panelId }
 }
 
-/** Divide um leaf em dois, retornando novo nó de split */
+/** Splits a leaf into two, returning a new split node */
 export function splitLeaf(
   root: LayoutNode,
   targetLeafId: string,
@@ -52,7 +52,7 @@ export function splitLeaf(
   return { ...root, children: [newA, newB] }
 }
 
-/** Remove um painel do layout. Retorna null se a árvore ficou vazia. */
+/** Removes a panel from the layout. Returns null if the tree becomes empty. */
 export function removePanel(
   root: LayoutNode,
   panelId: string
@@ -73,7 +73,7 @@ export function removePanel(
   return { ...root, children: [newA, newB] }
 }
 
-/** Troca dois painéis de posição na árvore */
+/** Swaps two panels in the tree */
 export function swapPanels(
   root: LayoutNode,
   panelIdA: string,
@@ -87,29 +87,29 @@ export function swapPanels(
 }
 
 /**
- * Move um painel para uma nova posição, dividindo o painel alvo.
+ * Moves a panel to a new position by splitting the target panel.
  * zone: 'top' | 'bottom' | 'left' | 'right'
  */
 export function movePanelToSplit(
   root: LayoutNode,
   sourcePanelId: string,
-  targetLeafId: string, // id do LeafNode alvo
+  targetLeafId: string, // id of the target LeafNode
   zone: 'top' | 'bottom' | 'left' | 'right'
 ): LayoutNode {
-  // 1. Remover painel fonte da árvore
+  // 1. Remove source panel from the tree
   const withoutSource = removePanel(root, sourcePanelId)
   if (!withoutSource) return root
 
-  // 2. Encontrar novo leafId do targetLeaf após remoção
+  // 2. Determine split direction and insertion order from the drop zone
   const direction: 'horizontal' | 'vertical' =
     zone === 'left' || zone === 'right' ? 'horizontal' : 'vertical'
   const insertAfter = zone === 'right' || zone === 'bottom'
 
-  // 3. Dividir o leaf alvo inserindo o painel fonte
+  // 3. Split the target leaf, inserting the source panel
   return splitLeaf(withoutSource, targetLeafId, sourcePanelId, direction, insertAfter)
 }
 
-/** Atualiza os tamanhos de um split específico */
+/** Updates the sizes of a specific split node */
 export function updateSizes(
   root: LayoutNode,
   splitId: string,
@@ -125,7 +125,7 @@ export function updateSizes(
   return { ...root, children: [newA, newB] }
 }
 
-/** Encontra um leaf pelo panelId */
+/** Finds a leaf node by panelId */
 export function findLeafByPanelId(
   root: LayoutNode,
   panelId: string
@@ -139,7 +139,7 @@ export function findLeafByPanelId(
   )
 }
 
-/** Coleta todos os panelIds da árvore */
+/** Collects all panelIds from the tree */
 export function allPanelIds(root: LayoutNode): string[] {
   if (root.type === 'leaf') return [root.panelId]
   return [...allPanelIds(root.children[0]), ...allPanelIds(root.children[1])]

@@ -26,7 +26,7 @@ const TabBar: React.FC = () => {
 
   return (
     <div className={`${styles.tabBar} tab-bar`}>
-      {/* Espaço para os traffic lights do macOS */}
+      {/* Space reserved for macOS traffic lights */}
       <div className={styles.trafficLightSpace} style={{ WebkitAppRegion: 'drag' } as React.CSSProperties} />
 
       {/* Tabs */}
@@ -42,24 +42,24 @@ const TabBar: React.FC = () => {
             <button
               className={styles.tabClose}
               onClick={(e) => handleTabClose(e, tab.id)}
-              title="Fechar aba"
+              title="Close tab"
             >
               ×
             </button>
           </div>
         ))}
 
-        {/* Botão nova aba */}
+        {/* New tab button */}
         <button
           className={styles.newTabBtn}
           onClick={addTab}
-          title="Nova aba (Cmd+T)"
+          title="New tab (Cmd+T)"
         >
           +
         </button>
       </div>
 
-      {/* Área de drag restante */}
+      {/* Remaining drag area */}
       <div className={styles.dragArea} style={{ WebkitAppRegion: 'drag' } as React.CSSProperties} />
     </div>
   )

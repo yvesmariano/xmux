@@ -65,15 +65,15 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ panelId, isFocused }) => {
         className={styles.dragHandle}
         {...listeners}
         {...attributes}
-        title="Arrastar painel"
+        title="Drag panel"
       >
         <GripVertical size={12} />
       </div>
 
-      {/* Título */}
+      {/* Title */}
       <span className={styles.title}>Terminal</span>
 
-      {/* Ações */}
+      {/* Actions */}
       <div className={styles.actions}>
         <button
           className={styles.actionBtn}
@@ -92,7 +92,7 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ panelId, isFocused }) => {
         <button
           className={`${styles.actionBtn} ${styles.closeBtn}`}
           onClick={handleClose}
-          title="Fechar painel (Cmd+W)"
+          title="Close panel (Cmd+W)"
         >
           <X size={12} />
         </button>

@@ -2,12 +2,17 @@ appId: com.xmux.app
 productName: xmux
 copyright: Copyright © 2026
 
+# node-pty is a native module — include the pre-built binary, skip rebuild
+buildDependenciesFromSource: false
+nodeGypRebuild: false
+
 directories:
   buildResources: resources
   output: dist
 
 files:
   - out/**/*
+  - node_modules/node-pty/**/*
   - '!**/.gitignore'
   - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}'
   - '!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}'

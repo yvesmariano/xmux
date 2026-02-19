@@ -15,28 +15,28 @@ export function usePty(
 
     const api = window.electronAPI.pty
 
-    // Tamanho inicial
+    // Initial size
     const { cols, rows } = terminal
 
-    // Criar sessão PTY
+    // Create PTY session
     api.create(panelId, cols, rows).catch(console.error)
 
-    // PTY → xterm (dados de saída)
+    // PTY → xterm (output data)
     const removeDataListener = api.onData(panelId, (data) => {
       terminal.write(data)
     })
 
     // PTY → xterm (exit)
     const removeExitListener = api.onExit(panelId, (_exitCode) => {
-      terminal.write('\r\n\x1b[1;31m[Processo encerrado]\x1b[0m\r\n')
+      terminal.write('\r\n\x1b[1;31m[Process exited]\x1b[0m\r\n')
     })
 
-    // xterm → PTY (input do usuário)
+    // xterm → PTY (user input)
     const disposeInput = terminal.onData((data) => {
       api.write(panelId, data)
     })
 
-    // Sync de resize: ResizeObserver → fitAddon.fit() → pty.resize()
+    // Resize sync: ResizeObserver → fitAddon.fit() → pty.resize()
     let resizeTimeout: ReturnType<typeof setTimeout> | null = null
     const resizeObserver = new ResizeObserver(() => {
       if (resizeTimeout) clearTimeout(resizeTimeout)
@@ -46,9 +46,9 @@ export function usePty(
           const { cols, rows } = terminal
           api.resize(panelId, cols, rows).catch(console.error)
         } catch {
-          // terminal pode estar sendo destruído
+          // terminal may be disposing
         }
-      }, 16) // debounce de um frame
+      }, 16) // one-frame debounce
     })
 
     if (containerRef.current) {
