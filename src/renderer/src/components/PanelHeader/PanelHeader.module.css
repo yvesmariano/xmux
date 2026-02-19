@@ -1,0 +1,86 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: var(--header-height);
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border);
+  padding: 0 6px;
+  gap: 6px;
+  flex-shrink: 0;
+  cursor: default;
+  transition: background 0.1s;
+}
+
+.header.focused {
+  background: var(--bg-highlight);
+  border-bottom-color: var(--blue);
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: var(--comment);
+  transition: color 0.1s;
+  touch-action: none;
+}
+
+.dragHandle:hover {
+  color: var(--fg-dark);
+  background: var(--bg-popup);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+
+.title {
+  flex: 1;
+  font-size: 11px;
+  color: var(--comment);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header.focused .title {
+  color: var(--fg-dark);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.header:hover .actions {
+  opacity: 1;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  color: var(--comment);
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s, background 0.1s;
+}
+
+.actionBtn:hover {
+  background: var(--bg-popup);
+  color: var(--fg);
+}
+
+.closeBtn:hover {
+  background: var(--red);
+  color: white;
+}

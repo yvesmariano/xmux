@@ -1,0 +1,77 @@
+.dropZone {
+  position: absolute;
+  z-index: 100;
+  transition: background 0.1s;
+  pointer-events: all;
+}
+
+/* Zonas de borda — 25% da dimensão relevante */
+.top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  cursor: n-resize;
+}
+
+.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  cursor: s-resize;
+}
+
+.left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 25%;
+  cursor: w-resize;
+}
+
+.right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 25%;
+  cursor: e-resize;
+}
+
+.center {
+  top: 25%;
+  left: 25%;
+  right: 25%;
+  bottom: 25%;
+  cursor: move;
+}
+
+/* Hover highlight */
+.dropZone.over {
+  background: rgba(122, 162, 247, 0.25);
+  border: 2px solid rgba(122, 162, 247, 0.7);
+}
+
+.top.over {
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+}
+
+.bottom.over {
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.left.over {
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+}
+
+.right.over {
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+}
+
+.center.over {
+  border-radius: 4px;
+}

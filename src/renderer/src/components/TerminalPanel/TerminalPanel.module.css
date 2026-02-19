@@ -1,0 +1,37 @@
+.terminalPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.terminalPanel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid var(--border);
+  transition: border-color 0.15s;
+}
+
+.terminalPanel.focused::after {
+  border-color: var(--blue);
+}
+
+.xtermContainer {
+  flex: 1;
+  overflow: hidden;
+  padding: 4px;
+}
+
+/* Garantir que o xterm preencha o container */
+.xtermContainer :global(.xterm) {
+  height: 100%;
+}
+
+.xtermContainer :global(.xterm-viewport) {
+  overflow-y: auto;
+}
