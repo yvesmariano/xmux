@@ -16,5 +16,5 @@
     "strictNullChecks": true,
     "esModuleInterop": true
   },
-  "include": ["src/renderer/src/**/*", "src/renderer/src/**/*.d.ts"]
+  "include": ["src/renderer/src/**/*", "src/renderer/src/**/*.d.ts", "src/shared/**/*"]
 }

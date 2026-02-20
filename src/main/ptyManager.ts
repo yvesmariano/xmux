@@ -1,5 +1,6 @@
 import * as pty from 'node-pty'
 import { WebContents } from 'electron'
+import { settingsStore } from './settingsStore'
 
 interface PtySession {
   pty: pty.IPty
@@ -14,13 +15,17 @@ export function createPty(
   rows: number,
   webContents: WebContents
 ): void {
-  const shell = process.env.SHELL ?? (process.platform === 'win32' ? 'cmd.exe' : '/bin/bash')
+  const general = settingsStore.get('general')
+  const shell =
+    general.shellPath ||
+    (process.env.SHELL ?? (process.platform === 'win32' ? 'cmd.exe' : '/bin/bash'))
+  const cwd = general.startingDirectory || (process.env.HOME ?? '/')
 
   const ptyProcess = pty.spawn(shell, [], {
     name: 'xterm-256color',
     cols,
     rows,
-    cwd: process.env.HOME ?? '/',
+    cwd,
     env: {
       ...process.env,
       TERM: 'xterm-256color',

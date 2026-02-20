@@ -6,32 +6,9 @@
 import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import { WebLinksAddon } from '@xterm/addon-web-links'
-
-// Tokyo Night theme
-const tokyoNightTheme = {
-  background: '#1a1b26',
-  foreground: '#c0caf5',
-  cursor: '#c0caf5',
-  cursorAccent: '#1a1b26',
-  selectionBackground: '#364a82',
-  selectionForeground: '#c0caf5',
-  black: '#15161e',
-  red: '#f7768e',
-  green: '#9ece6a',
-  yellow: '#e0af68',
-  blue: '#7aa2f7',
-  magenta: '#bb9af7',
-  cyan: '#7dcfff',
-  white: '#a9b1d6',
-  brightBlack: '#414868',
-  brightRed: '#f7768e',
-  brightGreen: '#9ece6a',
-  brightYellow: '#e0af68',
-  brightBlue: '#7aa2f7',
-  brightMagenta: '#bb9af7',
-  brightCyan: '#7dcfff',
-  brightWhite: '#c0caf5'
-}
+import type { AppearanceConfig } from '../../../shared/settingsTypes'
+import { resolveTheme } from '../../../shared/themes'
+import { getSettingsSync, registerAppearanceChangeHandler } from './settingsCache'
 
 export interface TerminalEntry {
   term: Terminal
@@ -42,24 +19,50 @@ export interface TerminalEntry {
 
 const registry = new Map<string, TerminalEntry>()
 
+function getTerminalOptions(appearance: AppearanceConfig): Record<string, unknown> {
+  const theme = resolveTheme(appearance.theme, appearance.customTheme)
+  return {
+    fontFamily: appearance.fontFamily,
+    fontSize: appearance.fontSize,
+    lineHeight: appearance.lineHeight,
+    cursorBlink: appearance.cursorBlink,
+    cursorStyle: appearance.cursorStyle,
+    scrollback: appearance.scrollback,
+    theme,
+    allowTransparency: false,
+    allowProposedApi: true
+  }
+}
+
+/**
+ * Updates all existing terminals when appearance settings change.
+ */
+function updateAllTerminals(appearance: AppearanceConfig): void {
+  const theme = resolveTheme(appearance.theme, appearance.customTheme)
+  for (const [, entry] of registry) {
+    entry.term.options.fontFamily = appearance.fontFamily
+    entry.term.options.fontSize = appearance.fontSize
+    entry.term.options.lineHeight = appearance.lineHeight
+    entry.term.options.cursorBlink = appearance.cursorBlink
+    entry.term.options.cursorStyle = appearance.cursorStyle
+    entry.term.options.scrollback = appearance.scrollback
+    entry.term.options.theme = theme
+    entry.fitAddon.fit()
+  }
+}
+
+// Register live update handler
+registerAppearanceChangeHandler(updateAllTerminals)
+
 /**
  * Returns the existing entry or creates a new xterm instance.
  * Does NOT call `term.open()` — that is done by the component.
  */
 export function getOrCreate(panelId: string): TerminalEntry {
   if (!registry.has(panelId)) {
-    const term = new Terminal({
-      fontFamily:
-        '"JetBrains Mono", "Cascadia Code", "Fira Code", Menlo, monospace',
-      fontSize: 13,
-      lineHeight: 1.2,
-      cursorBlink: true,
-      cursorStyle: 'block',
-      theme: tokyoNightTheme,
-      allowTransparency: false,
-      scrollback: 5000,
-      allowProposedApi: true
-    })
+    const { appearance } = getSettingsSync()
+    const opts = getTerminalOptions(appearance)
+    const term = new Terminal(opts)
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
     term.loadAddon(new WebLinksAddon())

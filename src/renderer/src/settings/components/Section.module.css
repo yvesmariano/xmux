@@ -1,0 +1,203 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--comment);
+}
+
+.input {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-dark);
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  max-width: 400px;
+}
+
+.input:focus {
+  border-color: var(--blue);
+}
+
+.inputSmall {
+  composes: input;
+  max-width: 120px;
+}
+
+.select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-dark);
+  color: var(--fg);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  max-width: 200px;
+}
+
+.select:focus {
+  border-color: var(--blue);
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  max-width: 540px;
+}
+
+.themeCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.themeCard:hover {
+  border-color: var(--comment);
+}
+
+.themeCardActive {
+  border-color: var(--blue);
+}
+
+.themePreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 32px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.themeName {
+  font-size: 11px;
+  color: var(--fg-dark);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.colorEditor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 540px;
+}
+
+.colorCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.colorDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+  padding: 0;
+}
+
+.colorDot:hover {
+  border-color: var(--fg-dark);
+  transform: scale(1.15);
+}
+
+.hiddenColorInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.colorLabel {
+  font-size: 9px;
+  color: var(--comment);
+  text-align: center;
+  line-height: 1;
+}
+
+.shortcutRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kbd {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-dark);
+  color: var(--fg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  min-width: 180px;
+}
+
+.recordBtn {
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-highlight);
+  color: var(--fg-dark);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.recordBtn:hover {
+  background: var(--bg-visual);
+  color: var(--fg);
+}
+
+.recordingActive {
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--bg-visual);
+}

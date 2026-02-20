@@ -1,0 +1,37 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  width: 180px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fg-dark);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.item:hover {
+  background: var(--bg-highlight);
+  color: var(--fg);
+}
+
+.active {
+  background: var(--bg-highlight);
+  color: var(--blue);
+}
+
+.active:hover {
+  color: var(--blue);
+}

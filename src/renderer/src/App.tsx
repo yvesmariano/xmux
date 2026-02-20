@@ -12,7 +12,40 @@ import PanelLayout from './components/PanelLayout/PanelLayout'
 import TabBar from './components/TabBar/TabBar'
 import StatusBar from './components/StatusBar/StatusBar'
 import { DropZonePosition } from './components/DropZone/DropZone'
+import { getSettingsSync } from './lib/settingsCache'
 import styles from './App.module.css'
+
+/**
+ * Converts an Electron-style accelerator string into a set of flags
+ * that can be compared against a KeyboardEvent.
+ */
+function matchesAccelerator(e: KeyboardEvent, accelerator: string): boolean {
+  const parts = accelerator.split('+')
+  let needMeta = false
+  let needShift = false
+  let needAlt = false
+  let targetKey = ''
+
+  for (const part of parts) {
+    const lower = part.toLowerCase()
+    if (lower === 'commandorcontrol' || lower === 'cmd' || lower === 'command' || lower === 'ctrl' || lower === 'control') {
+      needMeta = true
+    } else if (lower === 'shift') {
+      needShift = true
+    } else if (lower === 'alt' || lower === 'option') {
+      needAlt = true
+    } else {
+      targetKey = lower
+    }
+  }
+
+  const meta = e.metaKey || e.ctrlKey
+  if (needMeta !== meta) return false
+  if (needShift !== e.shiftKey) return false
+  if (needAlt !== e.altKey) return false
+
+  return e.key.toLowerCase() === targetKey
+}
 
 const App: React.FC = () => {
   const activeTab = useActiveTab()
@@ -33,10 +66,17 @@ const App: React.FC = () => {
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
-      const meta = e.metaKey || e.ctrlKey
+      const { shortcuts } = getSettingsSync()
 
-      // Cmd+T — new tab
-      if (meta && e.key === 't' && !e.shiftKey) {
+      // Cmd+, — open settings
+      if ((e.metaKey || e.ctrlKey) && e.key === ',' && !e.shiftKey && !e.altKey) {
+        e.preventDefault()
+        window.electronAPI.settings.openSettings()
+        return
+      }
+
+      // New tab
+      if (matchesAccelerator(e, shortcuts.newTab)) {
         e.preventDefault()
         addTab()
         return
@@ -45,22 +85,22 @@ const App: React.FC = () => {
       const focusedPanelId = activeTab?.focusedPanelId
       if (!focusedPanelId) return
 
-      // Cmd+D — horizontal split
-      if (meta && e.key === 'd' && !e.shiftKey) {
+      // Split horizontal
+      if (matchesAccelerator(e, shortcuts.splitHorizontal)) {
         e.preventDefault()
         splitPanel(focusedPanelId, 'horizontal')
         return
       }
 
-      // Cmd+Shift+D — vertical split
-      if (meta && e.key === 'd' && e.shiftKey) {
+      // Split vertical
+      if (matchesAccelerator(e, shortcuts.splitVertical)) {
         e.preventDefault()
         splitPanel(focusedPanelId, 'vertical')
         return
       }
 
-      // Cmd+W — close panel
-      if (meta && e.key === 'w') {
+      // Close panel
+      if (matchesAccelerator(e, shortcuts.closePanel)) {
         e.preventDefault()
         closePanel(focusedPanelId)
         return
