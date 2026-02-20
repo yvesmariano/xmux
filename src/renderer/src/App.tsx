@@ -10,6 +10,7 @@ import {
 import { usePanelStore, useActiveTab } from './store/panelStore'
 import PanelLayout from './components/PanelLayout/PanelLayout'
 import TabBar from './components/TabBar/TabBar'
+import StatusBar from './components/StatusBar/StatusBar'
 import { DropZonePosition } from './components/DropZone/DropZone'
 import styles from './App.module.css'
 
@@ -105,6 +106,7 @@ const App: React.FC = () => {
         <div className={styles.content}>
           <PanelLayout />
         </div>
+        <StatusBar />
       </div>
       <DragOverlay>
         {/* Minimal drag preview */}

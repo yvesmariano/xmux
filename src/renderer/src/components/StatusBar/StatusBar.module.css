@@ -1,0 +1,42 @@
+.statusBar {
+  display: flex;
+  align-items: center;
+  height: var(--statusbar-height);
+  flex-shrink: 0;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border);
+  padding: 0 8px;
+  font-size: 11px;
+  color: var(--comment);
+  gap: 0;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.center {
+  flex-shrink: 0;
+}
+
+.right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

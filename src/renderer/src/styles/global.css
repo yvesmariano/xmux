@@ -25,6 +25,7 @@
   --tab-height: 34px;
   --header-height: 28px;
   --traffic-light-width: 68px;
+  --statusbar-height: 24px;
 }
 
 * {
